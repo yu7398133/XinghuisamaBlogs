@@ -186,18 +186,18 @@ export default async function ChatterDetail({ params }: { params: Promise<{ slug
 
               <div className="relative">
                 <style>{`
-                  .prose h1 { font-size: 1.8rem !important; font-weight: 900 !important; margin-bottom: 1.2rem !important; margin-top: 2rem !important; line-height: 1.3 !important; color: inherit !important; }
-                  .prose h2 { font-size: 1.5rem !important; font-weight: 800 !important; margin-bottom: 1rem !important; margin-top: 1.5rem !important; color: inherit !important; }
-                  .prose h3 { font-size: 1.2rem !important; font-weight: 700 !important; margin-bottom: 0.8rem !important; color: inherit !important; }
-                  .prose p { font-size: 0.95rem !important; line-height: 1.75 !important; color: inherit !important; }
+                  .prose h1 { font-size: 1.4rem !important; font-weight: 900 !important; margin-bottom: 0.8rem !important; margin-top: 2rem !important; line-height: 1.3 !important; color: inherit !important; }
+                  .prose h2 { font-size: 1.25rem !important; font-weight: 800 !important; margin-bottom: 0.6rem !important; margin-top: 1.8rem !important; color: inherit !important; }
+                  .prose h3 { font-size: 1.1rem !important; font-weight: 700 !important; margin-bottom: 0.5rem !important; margin-top: 1.5rem !important; color: inherit !important; }
+                  .prose p { font-size: 0.9rem !important; line-height: 1.75 !important; color: inherit !important; }
                   
                   .prose a { color: #6366f1 !important; text-decoration: none !important; font-weight: 600 !important; border-bottom: 1px dashed #6366f1 !important; transition: all 0.3s ease !important; }
                   .prose a:hover { color: #4f46e5 !important; border-bottom-style: solid !important; background-color: rgba(99, 102, 241, 0.1) !important; padding: 0 0.2rem !important; border-radius: 0.2rem !important; }
                   .dark .prose a { color: #818cf8 !important; border-bottom-color: #818cf8 !important; }
                   .dark .prose a:hover { color: #a5b4fc !important; background-color: rgba(129, 140, 248, 0.15) !important; }
 
-                  .prose ul { list-style-type: disc !important; padding-left: 1.5rem !important; font-size: 0.95rem !important; }
-                  .prose ol { list-style-type: decimal !important; padding-left: 1.5rem !important; font-size: 0.95rem !important; }
+                  .prose ul { list-style-type: disc !important; padding-left: 1.5rem !important; font-size: 0.9rem !important; }
+                  .prose ol { list-style-type: decimal !important; padding-left: 1.5rem !important; font-size: 0.9rem !important; }
                   .prose li { display: list-item !important; margin-bottom: 0.5rem !important; }
                   
                   .prose ul ul, .prose ol ul { list-style-type: circle !important; margin-top: 0.25rem !important; margin-bottom: 0.25rem !important; }
@@ -274,7 +274,7 @@ export default async function ChatterDetail({ params }: { params: Promise<{ slug
                 `}</style>
 
                 <div
-                  className="prose prose-slate dark:prose-invert prose-base md:prose-lg max-w-none text-slate-800 dark:text-slate-200 font-serif transition-colors duration-700 leading-relaxed scroll-smooth"
+                  className="prose prose-slate dark:prose-invert prose-base max-w-none text-slate-800 dark:text-slate-200 font-serif transition-colors duration-700 leading-relaxed scroll-smooth"
                   dangerouslySetInnerHTML={{ __html: chatterData.contentHtml }}
                 />
               </div>
