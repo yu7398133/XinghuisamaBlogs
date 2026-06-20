@@ -1,4 +1,4 @@
-FROM node:18-slim
+FROM node:22-slim
 
 # 系统依赖
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -14,12 +14,14 @@ COPY my-blog-manager/package.json my-blog-manager/package-lock.json ./
 # 安装 Node.js 依赖
 RUN npm install --production=false
 
-# 复制 Python 依赖清单并安装
-COPY my-blog-manager/requirements.txt .
-RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
-
 # 复制全部源码
 COPY my-blog-manager/ .
+
+# 安装 Python 依赖
+RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
+
+# 构建 Next.js 前端（生成 standalone 产物）
+RUN npm run build
 
 # 创建数据目录
 RUN mkdir -p /data/blog /data/manager_data
