@@ -23,6 +23,10 @@ RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 # 构建 Next.js 前端（生成 standalone 产物）
 RUN npm run build
 
+# 复制静态资源到 standalone 目录（Next.js standalone 不会自动包含）
+RUN cp -r .next/static .next/standalone/.next/static && \
+    cp -r public .next/standalone/public 2>/dev/null || true
+
 # 创建数据目录
 RUN mkdir -p /data/blog /data/manager_data
 
