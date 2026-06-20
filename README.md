@@ -126,6 +126,46 @@ docker compose -f docker-compose.build.yml up -d --build
 | `./XHBlogs:/data/blog` | 博客前端源码（宿主机目录） |
 | `manager_data:/data/manager_data` | 管理器数据（草稿等，持久化） |
 
+#### Docker 部署常见问题
+
+**Q1：容器内无法推送代码到 GitHub？**
+
+Docker 容器首次启动时，挂载的 `XHBlogs` 目录需要手动初始化 Git。在宿主机上执行：
+
+```bash
+# 进入容器
+docker exec -it xhblogs-manager bash
+
+# 进入博客目录，初始化 git
+cd /data/blog
+git init
+git config user.name "你的GitHub用户名"
+git config user.email "你的邮箱@example.com"
+git remote add origin git@github.com:你的用户名/你的仓库名.git
+
+# 安装 GitHub SSH host key
+ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+# 提交并推送
+git add .
+git commit -m "init"
+git push -u origin main
+```
+
+> 💡 **提示**：容器重启后无需重复上述操作，Git 状态会保留在宿主机的 `XHBlogs` 目录中。
+
+**Q2：A线和B线可以用同一个 GitHub 仓库吗？**
+
+可以。A线和B线使用**同一仓库的不同分支**即可：
+- **A线**：用于 GitHub Pages 部署静态页面，分支填 `gh-pages` 或 `A`
+- **B线**：用于 Vercel 部署源码，分支填 `main`
+
+在控制台配置时，A线和B线的仓库地址填同一个 SSH 地址，只是分支名不同。
+
+**Q3：Vercel 部署报错 "Root Directory does not exist"？**
+
+如果你是直接从 `XHBlogs` 子目录推送代码到 GitHub（而非从项目根目录），仓库的根目录就已经是博客源码了。此时 Vercel 项目设置中 **Root Directory 必须留空**，不能再填 `XHBlogs`。
+
 ---
 
 ### 3. Web 模式（不用 Docker）
@@ -261,7 +301,13 @@ git commit -m "first commit"
 
 ![导入项目](picture/Pasted%20image%2020260427121939.png)
 
-Framework Preset 选择 **Next.js**，点击 **Deploy**：
+Framework Preset 选择 **Next.js**。
+
+> ⚠️ **Root Directory 设置**：
+> - 如果仓库根目录就是 `XHBlogs` 的源码（即从 `XHBlogs` 目录直接 `git push`），**Root Directory 留空**
+> - 如果仓库是项目整体（包含 `XHBlogs` 子目录），Root Directory 填 `XHBlogs`
+
+点击 **Deploy**：
 
 ![点击Deploy](picture/Pasted%20image%2020260427122141.png)
 
