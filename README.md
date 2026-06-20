@@ -36,6 +36,10 @@
 
 在开始之前，请确保你的电脑已安装以下运行环境，否则后续程序将无法正常启动：
 
+**方式一：Docker 部署（推荐，适用于 NAS / 服务器）**
+- **Docker** + **Docker Compose**（其余依赖全部打包在镜像内）
+
+**方式二：直接运行**
 - **Node.js** (推荐版本 v18.x 或以上)
 - **包管理器** (npm)
 - **Git** (用于拉取代码与版本控制)
@@ -86,34 +90,41 @@
 
 > **适用场景**：将博客后台部署在 NAS、Linux 服务器或其他非 Windows 环境，通过浏览器远程管理。
 
-**Linux / NAS 部署：**
+**Docker 部署（推荐）：**
 
 ```bash
 # 1. 克隆项目
 git clone https://github.com/yu7398133/XinghuisamaBlogs.git
+cd XinghuisamaBlogs
+
+# 2. 一键启动
+docker compose up -d
+```
+
+启动后在浏览器打开：`http://<你的设备IP>:3000`
+
+**常用命令：**
+
+```bash
+# 查看日志
+docker compose logs -f
+
+# 停止
+docker compose down
+
+# 重新构建并启动（代码更新后）
+docker compose up -d --build
+```
+
+---
+
+**不用 Docker 也可以直接运行：**
+
+```bash
 cd XinghuisamaBlogs/my-blog-manager
-
-# 2. 赋予启动脚本执行权限
 chmod +x Start_web.sh
-
-# 3. 启动（首次会自动安装依赖）
 ./Start_web.sh
 ```
-
-**Windows Web 模式：**
-
-```bat
-:: 进入 my-blog-manager 文件夹，双击运行
-Start_web.bat
-```
-
-**启动后在浏览器打开：**
-
-```
-http://<你的设备IP>:3000
-```
-
-例如：`http://192.168.1.100:3000`
 
 **自定义端口：**
 

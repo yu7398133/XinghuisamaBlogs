@@ -37,7 +37,8 @@ def get_config():
         "backend_port": 8019,
         "frontend_host": "0.0.0.0",
         "frontend_port": 3000,
-        "use_dev_mode": False
+        "use_dev_mode": False,
+        "blog_path": ""
     }
     if os.path.exists(config_file):
         try:
@@ -51,7 +52,28 @@ def get_config():
     defaults["frontend_port"] = int(os.environ.get("FRONTEND_PORT", defaults["frontend_port"]))
     defaults["backend_host"] = os.environ.get("BACKEND_HOST", defaults["backend_host"])
     defaults["frontend_host"] = os.environ.get("FRONTEND_HOST", defaults["frontend_host"])
+    defaults["blog_path"] = os.environ.get("BLOG_PATH", defaults["blog_path"])
     return defaults
+
+
+def auto_config_blog_path(blog_path):
+    """Docker 环境下自动写入 deploy_config.json，省去手动配置"""
+    if not blog_path:
+        return
+    deploy_config_file = os.path.join(EXE_DIR, 'data', 'deploy_config.json')
+    os.makedirs(os.path.dirname(deploy_config_file), exist_ok=True)
+    existing = {}
+    if os.path.exists(deploy_config_file):
+        try:
+            with open(deploy_config_file, 'r', encoding='utf-8') as f:
+                existing = json.load(f)
+        except Exception:
+            pass
+    if not existing.get('blogPath'):
+        existing['blogPath'] = blog_path
+        with open(deploy_config_file, 'w', encoding='utf-8') as f:
+            json.dump(existing, f, ensure_ascii=False, indent=2)
+        print(f"  📝 已自动配置博客路径: {blog_path}")
 
 
 def write_port_config(backend_port):
@@ -141,6 +163,9 @@ def main():
     print(f"  后端地址: {backend_host}:{backend_port}")
     print(f"  前端地址: {frontend_host}:{frontend_port}")
     print(f"  运行模式: {'开发模式' if use_dev_mode else '生产模式'}")
+    if cfg.get('blog_path'):
+        print(f"  博客路径: {cfg['blog_path']}")
+        auto_config_blog_path(cfg['blog_path'])
     print("=" * 60)
 
     env_vars = os.environ.copy()
