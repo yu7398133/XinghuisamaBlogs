@@ -1,5 +1,7 @@
 import os
 import shutil
+import subprocess
+import threading
 from fastapi import APIRouter, Request
 
 router = APIRouter()
@@ -23,6 +25,47 @@ SYNC_FILES = [
 def is_safe_blog_dir(target_path):
     """防呆检测：只有包含 package.json 的才被认为是安全的博客目录"""
     return os.path.exists(os.path.join(target_path, "package.json"))
+
+
+def trigger_rebuild(blog_path):
+    """后台触发 Next.js 重建并重启前端"""
+    def _rebuild():
+        try:
+            print("[Rebuild] Starting npm run build...")
+            result = subprocess.run(
+                ["npm", "run", "build"],
+                cwd=blog_path,
+                timeout=300,
+                capture_output=True,
+                text=True
+            )
+            if result.returncode != 0:
+                print(f"[Rebuild] Build failed: {result.stderr[:500]}")
+                return
+
+            # 复制 static 到 standalone
+            static_src = os.path.join(blog_path, ".next", "static")
+            standalone_next = os.path.join(blog_path, ".next", "standalone", ".next")
+            if os.path.exists(static_src) and os.path.exists(standalone_next):
+                dst = os.path.join(standalone_next, "static")
+                if os.path.exists(dst):
+                    shutil.rmtree(dst)
+                shutil.copytree(static_src, dst)
+
+            public_src = os.path.join(blog_path, "public")
+            standalone_public = os.path.join(blog_path, ".next", "standalone", "public")
+            if os.path.exists(public_src):
+                if os.path.exists(standalone_public):
+                    shutil.rmtree(standalone_public)
+                shutil.copytree(public_src, standalone_public)
+
+            # 重启前端进程
+            os.system("pkill -f 'node server.js' || true")
+            print("[Rebuild] Done! Frontend restarted.")
+        except Exception as e:
+            print(f"[Rebuild] Failed: {e}")
+
+    threading.Thread(target=_rebuild, daemon=True).start()
 
 
 @router.post("/check")
@@ -81,21 +124,21 @@ async def execute_sync(request: Request):
             if os.path.exists(src_file):
                 os.makedirs(os.path.dirname(dst_file), exist_ok=True)
 
-                # 🌟 核心过滤逻辑：如果是 siteConfig.ts，拦截并剔除敏感信息
                 if f == "siteConfig.ts":
                     with open(src_file, "r", encoding="utf-8") as file_in:
                         lines = file_in.readlines()
 
                     with open(dst_file, "w", encoding="utf-8") as file_out:
                         for line in lines:
-                            # 只要这一行包含以下关键词，直接跳过不写入
                             if "picBedName:" in line or "picBedUrl:" in line or "picBedToken:" in line or "图床核心配置" in line:
                                 continue
                             file_out.write(line)
                 else:
-                    # 其他普通文件，直接物理拷贝
                     shutil.copy2(src_file, dst_file)
 
-        return {"success": True, "message": "🎉 完美撒花！所有文章与配置已镜像覆盖至目标博客。"}
+        # 3. 触发后台 rebuild
+        trigger_rebuild(target_path)
+
+        return {"success": True, "message": "🎉 同步完成！前端正在后台重建，约 1-2 分钟后自动生效。"}
     except Exception as e:
         return {"success": False, "message": f"同步过程中发生致命错误: {str(e)}"}
