@@ -166,6 +166,23 @@ git push -u origin main
 
 如果你是直接从 `XHBlogs` 子目录推送代码到 GitHub（而非从项目根目录），仓库的根目录就已经是博客源码了。此时 Vercel 项目设置中 **Root Directory 必须留空**，不能再填 `XHBlogs`。
 
+**Q4：Vercel 私有仓库部署失败？**
+
+如果使用 Vercel API 或 CLI 部署私有仓库，需要先通过 Vercel Dashboard 关联 GitHub 仓库（安装 Vercel GitHub App），然后再触发部署。直接用 API 部署私有仓库会报 "repository can't be found"。
+
+**Q5：管理后台修改了站点设置，但本地页面没变化？**
+
+Docker 容器内的前端是构建好的编译产物，修改 `siteConfig.ts` 源文件不会热更新。有两种解决方式：
+- **推荐**：修改后直接同步源码到 Vercel，用线上地址查看效果
+- **备选**：重新构建 Docker 镜像（`docker compose -f docker-compose.build.yml up -d --build`），但耗时较长
+
+**Q6：评论系统如何配置？**
+
+评论系统基于 Gitalk（GitHub Issues），需要三步：
+1. 创建一个 **Public（公开）** 仓库存储评论（如 `HSBlogs-comments`）
+2. 在 GitHub Settings → Developer settings → OAuth Apps 创建应用，Callback URL 填博客域名
+3. 在管理后台设置页或直接编辑 `siteConfig.ts`，填写 `gitalkConfig` 中的 `clientID`、`clientSecret`、`repo`、`owner`、`admin` 字段
+
 ---
 
 ### 3. Web 模式（不用 Docker）
