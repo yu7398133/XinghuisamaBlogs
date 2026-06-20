@@ -58,10 +58,7 @@ curl -fsSL https://get.docker.com | sh
 # 将当前用户加入 docker 组（免 sudo）
 sudo usermod -aG docker $USER
 
-# 重新登录 shell 使其生效，或执行：
-newgrp docker
-
-# 验证安装
+# 重新登录 SSH 使其生效，然后验证
 docker --version
 docker compose version
 ```
