@@ -56,7 +56,7 @@ export default function ChatterBoard({ chatters: initialChatters }: { chatters: 
       const config = await configRes.json();
 
       // 调用全能删除接口
-      const res = await fetch(`http://127.0.0.1:${config.api_port}/api/drafts/delete`, {
+      const res = await fetch(`/api/drafts/delete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: slug }) // 这里传的是 slug (即 md 的文件名)

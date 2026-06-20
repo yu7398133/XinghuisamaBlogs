@@ -29,7 +29,7 @@ function DraftsContent() {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const configData = await configRes.json();
 
-      const res = await fetch(`http://127.0.0.1:${configData.api_port}/api/drafts/list`, {
+      const res = await fetch(`/api/drafts/list`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ blog_path: blogPath })
@@ -61,7 +61,7 @@ function DraftsContent() {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const configData = await configRes.json();
 
-      const res = await fetch(`http://127.0.0.1:${configData.api_port}/api/drafts/delete`, {
+      const res = await fetch(`/api/drafts/delete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ blog_path: blogPath, id: id })

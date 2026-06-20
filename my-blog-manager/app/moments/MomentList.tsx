@@ -95,7 +95,7 @@ export default function MomentList({ moments, authorName, avatarUrl }: any) {
         uploadData.append('file', files[i]);
         uploadData.append('url', picUrl);
         uploadData.append('token', picToken);
-        const res = await fetch(`http://127.0.0.1:${configData.api_port}/api/picbed/upload`, {
+        const res = await fetch(`/api/picbed/upload`, {
           method: 'POST',
           body: uploadData,
         });
@@ -174,7 +174,7 @@ export default function MomentList({ moments, authorName, avatarUrl }: any) {
         location: newMoment.location,
         images: newMoment.images
       };
-      const apiUrl = `http://127.0.0.1:${configData.api_port}/api/moments/save`;
+      const apiUrl = `/api/moments/save`;
 
       const res = await fetch(apiUrl, {
         method: 'POST',
@@ -206,7 +206,7 @@ export default function MomentList({ moments, authorName, avatarUrl }: any) {
     try {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const configData = await configRes.json();
-      const apiUrl = `http://127.0.0.1:${configData.api_port}/api/moments/delete`;
+      const apiUrl = `/api/moments/delete`;
 
       const res = await fetch(apiUrl, {
         method: 'POST',

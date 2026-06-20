@@ -41,7 +41,7 @@ export default function FloatingImageTool({ isOpen, onClose, onInsert }: Floatin
       uploadData.append('url', picUrl);
       uploadData.append('token', picToken);
 
-      const res = await fetch(`http://127.0.0.1:${configData.api_port}/api/picbed/upload`, {
+      const res = await fetch(`/api/picbed/upload`, {
         method: 'POST',
         body: uploadData,
       });

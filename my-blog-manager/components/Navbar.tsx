@@ -26,7 +26,7 @@ export default function Navbar() {
       try {
         const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
         const config = await configRes.json();
-        const res = await fetch(`http://127.0.0.1:${config.api_port}/api/deploy/config`);
+        const res = await fetch(`/api/deploy/config`);
         if (res.ok) {
           const data = await res.json();
           if (data.blogPath) {
@@ -97,7 +97,7 @@ export default function Navbar() {
 
         const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
         const configData = await configRes.json();
-        const apiBase = `http://127.0.0.1:${configData.api_port}`;
+        const apiBase = ``;
 
         for (const op of operations) {
           let apiUrl = '';
@@ -175,7 +175,7 @@ export default function Navbar() {
       const configData = await configRes.json();
       showToast("🚀 正在镜像数据至目标项目，请稍候...", "info");
 
-      const res = await fetch(`http://127.0.0.1:${configData.api_port}/api/sync/execute`, {
+      const res = await fetch(`/api/sync/execute`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ blogPath: targetBlogPath })

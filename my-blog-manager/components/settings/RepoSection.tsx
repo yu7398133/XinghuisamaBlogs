@@ -40,7 +40,7 @@ export default function RepoSection() {
       try {
         const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
         const config = await configRes.json();
-        const res = await fetch(`http://127.0.0.1:${config.api_port}/api/deploy/config`);
+        const res = await fetch(`/api/deploy/config`);
         if (res.ok) {
           const data = await res.json();
           setDeployData({
@@ -63,7 +63,7 @@ export default function RepoSection() {
     try {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const config = await configRes.json();
-      const res = await fetch(`http://127.0.0.1:${config.api_port}/api/sync/check`, {
+      const res = await fetch(`/api/sync/check`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ blogPath: deployData.blogPath })
@@ -81,7 +81,7 @@ export default function RepoSection() {
     try {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const config = await configRes.json();
-      const res = await fetch(`http://127.0.0.1:${config.api_port}/api/deploy/check`, {
+      const res = await fetch(`/api/deploy/check`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ blogPath: deployData.blogPath })
@@ -99,7 +99,7 @@ export default function RepoSection() {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const config = await configRes.json();
       // 向后端传递参数 ?type=static 或 ?type=source
-      const res = await fetch(`http://127.0.0.1:${config.api_port}/api/deploy/ssh/key?type=${type}`);
+      const res = await fetch(`/api/deploy/ssh/key?type=${type}`);
       const data = await res.json();
       if (data.success) {
         setSshConfig({ key: data.key, type });
@@ -117,7 +117,7 @@ export default function RepoSection() {
     try {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const configData = await configRes.json();
-      const res = await fetch(`http://127.0.0.1:${configData.api_port}/api/deploy/init`, {
+      const res = await fetch(`/api/deploy/init`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(deployData)
@@ -136,7 +136,7 @@ export default function RepoSection() {
     try {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const configData = await configRes.json();
-      const res = await fetch(`http://127.0.0.1:${configData.api_port}/api/deploy/publish`, {
+      const res = await fetch(`/api/deploy/publish`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ blogPath: deployData.blogPath })
@@ -155,7 +155,7 @@ export default function RepoSection() {
     try {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const configData = await configRes.json();
-      const res = await fetch(`http://127.0.0.1:${configData.api_port}/api/deploy/source`, {
+      const res = await fetch(`/api/deploy/source`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ blogPath: deployData.blogPath })
@@ -172,7 +172,7 @@ export default function RepoSection() {
     try {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const config = await configRes.json();
-      const res = await fetch(`http://127.0.0.1:${config.api_port}/api/deploy/config`, {
+      const res = await fetch(`/api/deploy/config`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(deployData)

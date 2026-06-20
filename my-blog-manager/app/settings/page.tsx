@@ -62,7 +62,7 @@ function SettingsContent() {
         const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
         const configData = await configRes.json();
 
-        const res = await fetch(`http://127.0.0.1:${configData.api_port}/api/config/get`, { cache: 'no-store' });
+        const res = await fetch(`/api/config/get`, { cache: 'no-store' });
         const data = await res.json();
 
         if (data.success && data.data) {
@@ -100,7 +100,7 @@ function SettingsContent() {
     try {
       const configRes = await fetch(`/backend_config.json?t=${Date.now()}`);
       const configData = await configRes.json();
-      const res = await fetch(`http://127.0.0.1:${configData.api_port}/api/music/query/${id}`, { cache: 'no-store' });
+      const res = await fetch(`/api/music/query/${id}`, { cache: 'no-store' });
       const data = await res.json();
       return data.success ? data.data : { error: true, id, name: "查询失败或无版权" };
     } catch (error) {
