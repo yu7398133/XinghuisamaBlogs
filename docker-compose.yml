@@ -16,6 +16,8 @@ services:
       - ./XHBlogs:/data/blog
       # 管理器数据（草稿等，持久化）
       - manager_data:/data/manager_data
+      # 自定义配置
+      - ./web_config.json:/app/web_config.json
     environment:
       - BACKEND_HOST=0.0.0.0
       - BACKEND_PORT=8019
