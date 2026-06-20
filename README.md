@@ -439,6 +439,92 @@ Framework Preset 选择 **Next.js**。
 
 ---
 
+## 八、写文章与发布全流程
+
+### 内容类型
+
+| 类型 | 目录 | 用途 | 格式 |
+|------|------|------|------|
+| **文章** | `posts/` | 正式博客文章 | Markdown + YAML frontmatter |
+| **杂谈** | `chatters/` | 随笔、碎片记录 | Markdown + YAML frontmatter |
+| **动态** | `moments/` | 类似朋友圈 | Markdown + YAML frontmatter |
+
+### 文章格式
+
+```markdown
+---
+title: "文章标题"
+date: "2026-06-20 12:00:00"
+description: "一句话简介"
+cover: "封面图URL"
+tags: ["标签1", "标签2"]
+---
+
+## 正文内容
+
+支持 Markdown 语法...
+```
+
+### 发布流程（手动）
+
+1. 在管理后台编辑器写文章，或手动创建 `.md` 文件
+2. 点 **暂存到操作队列** → **更新本地** → **同步Blog**
+3. 打开 **同步部署页面** → 点 **仅同步源码**
+4. Vercel 自动构建，几分钟后线上生效
+
+### AI 写文章并推送（SSH 全流程）
+
+> 以下流程适合 AI 助手（如 MiMoCode、Claude 等）通过 SSH 直接操作服务器完成写文章和发布。
+
+**环境信息：**
+- NAS SSH：`sshpass -p '密码' ssh user@host`
+- 容器名：`xhblogs-manager`
+- 博客目录：`/data/blog`
+- 仓库：`git@github.com:你的用户名/你的仓库名.git`
+
+**完整命令流程：**
+
+```bash
+# 1. SSH 到宿主机并进入容器
+sshpass -p '密码' ssh user@host "docker exec xhblogs-manager bash -c 'cd /data/blog && ls'"
+
+# 2. 创建文章（以 posts 为例）
+sshpass -p '密码' ssh user@host "docker exec xhblogs-manager bash -c 'cat > /data/blog/posts/文章文件名.md << \"EOF\"
+---
+title: \"文章标题\"
+date: \"2026-06-20 12:00:00\"
+description: \"一句话简介\"
+cover: \"https://example.com/cover.jpg\"
+tags: [\"标签1\", \"标签2\"]
+---
+
+## 正文标题
+
+正文内容...
+EOF'"
+
+# 3. 提交并推送到 GitHub
+sshpass -p '密码' ssh user@host "docker exec xhblogs-manager bash -c 'cd /data/blog && git add -A && git commit -m \"post: 文章标题\" && git push origin main'"
+```
+
+**AI 助手操作模板：**
+
+当用户要求"帮我写一篇文章并发布"时，AI 可以：
+
+1. 根据用户主题生成 Markdown 内容
+2. 通过 SSH 写入容器内的 `/data/blog/posts/` 目录
+3. `git add -A && git commit && git push` 推送到 GitHub
+4. Vercel 自动构建部署
+
+**注意事项：**
+- 文件名建议用英文，如 `my-first-post.md`
+- `cover` 字段填图片 URL，留空则使用默认封面
+- `tags` 用于文章分类和搜索
+- 动态（moments）的时间戳用毫秒，如 `moment-1777128883968.md`
+- 推送后 Vercel 会自动重新构建，通常 2-3 分钟生效
+
+---
+
 ## 写在最后
 
 XHBLogs 还有诸多隐藏功能，期待你在实际使用中慢慢探索。如果你是资深开发者，完全可以基于源码进行二次开发！
