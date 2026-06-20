@@ -63,14 +63,85 @@
 
 ### 3. 快速开始
 
-#### ① 启动脚本
+本项目支持两种后台管理模式，请根据你的使用场景选择：
 
-当你完成上述环境的配置后，恭喜你，最基础的准备工作已经搞定了！
-首先，进入 `my-blog-manager` 文件夹（**⚠️ 注意：请绝对不要重命名此文件夹，否则会导致环境路径解析失败！**）
+| 模式 | 启动方式 | 访问方式 | 适用场景 |
+|------|---------|---------|----------|
+| **桌面模式** | `Start.bat` | 本地桌面窗口 (pywebview) | Windows 本地使用 |
+| **Web 模式** ⭐ | `Start_web.sh` / `Start_web.bat` | 浏览器访问 | NAS / 服务器 / 远程管理 |
+
+---
+
+#### ① 桌面模式（Windows 本地）
+
+进入 `my-blog-manager` 文件夹（**⚠️ 注意：请绝对不要重命名此文件夹，否则会导致环境路径解析失败！**）
 
 双击运行文件夹中的启动脚本：
 `Start.bat`
 脚本会自动检测并安装所需的依赖包。等待环境配置完成后，程序会自动唤起精美的后台控制台。
+
+---
+
+#### ①-B Web 模式（NAS / 服务器 / 远程管理）⭐
+
+> **适用场景**：将博客后台部署在 NAS、Linux 服务器或其他非 Windows 环境，通过浏览器远程管理。
+
+**Linux / NAS 部署：**
+
+```bash
+# 1. 克隆项目
+git clone https://github.com/yu7398133/XinghuisamaBlogs.git
+cd XinghuisamaBlogs/my-blog-manager
+
+# 2. 赋予启动脚本执行权限
+chmod +x Start_web.sh
+
+# 3. 启动（首次会自动安装依赖）
+./Start_web.sh
+```
+
+**Windows Web 模式：**
+
+```bat
+:: 进入 my-blog-manager 文件夹，双击运行
+Start_web.bat
+```
+
+**启动后在浏览器打开：**
+
+```
+http://<你的设备IP>:3000
+```
+
+例如：`http://192.168.1.100:3000`
+
+**自定义端口：**
+
+编辑 `my-blog-manager/web_config.json`：
+
+```json
+{
+  "backend_host": "0.0.0.0",
+  "backend_port": 8019,
+  "frontend_host": "0.0.0.0",
+  "frontend_port": 3000,
+  "use_dev_mode": false
+}
+```
+
+也可以通过环境变量覆盖：
+
+```bash
+FRONTEND_PORT=8080 BACKEND_PORT=8019 ./Start_web.sh
+```
+
+> **⚠️ 注意事项：**
+> - Web 模式**无登录认证**，请确保仅在内网环境使用
+> - 如需公网访问，建议配合 Nginx 反向代理 + 基础认证
+> - 原版 `Start.bat`（桌面模式）仍然可用，未安装 pywebview 时会自动切换到 Web 模式
+> - 生产模式需要先执行 `npm run build` 构建前端
+
+---
 
 #### ② 部署你的博客到 Vercel
 
