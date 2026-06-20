@@ -169,7 +169,7 @@ export default function AboutClient({
                   .prose h1 { font-size: 1.5rem !important; font-weight: 900 !important; margin-bottom: 0.8rem !important; margin-top: 2rem !important; line-height: 1.3 !important; color: inherit !important; }
                   .prose h2 { font-size: 1.3rem !important; font-weight: 800 !important; margin-bottom: 0.6rem !important; margin-top: 1.8rem !important; color: inherit !important; }
                   .prose h3 { font-size: 1.15rem !important; font-weight: 700 !important; margin-bottom: 0.5rem !important; margin-top: 1.5rem !important; color: inherit !important; }
-                  .prose p { font-size: 0.925rem !important; line-height: 1.75 !important; color: inherit !important; }
+                  .prose p { font-size: 0.925rem !important; line-height: 1.75 !important; color: inherit !important; margin-top: 0.3rem !important; margin-bottom: 0.5rem !important; }
                   .prose ul, .prose ol { padding-left: 1.2rem !important; font-size: 0.925rem !important; }
 
                   .prose pre {
@@ -207,7 +207,7 @@ export default function AboutClient({
                   @media (min-width: 768px) {
                     .prose h1 { font-size: 1.5rem !important; font-weight: 900 !important; margin-bottom: 0.8rem !important; margin-top: 2rem !important; line-height: 1.3 !important; }
                     .prose h2 { font-size: 1.3rem !important; font-weight: 800 !important; margin-bottom: 0.6rem !important; margin-top: 1.8rem !important; }
-                    .prose p { font-size: 0.925rem !important; }
+                    .prose p { font-size: 0.925rem !important; margin-top: 0.3rem !important; margin-bottom: 0.5rem !important; }
                     .prose pre { padding: 1.25rem !important; margin-top: 1.5rem !important; margin-bottom: 1.5rem !important; }
                     .prose pre code { font-size: 0.9em !important; }
                   }

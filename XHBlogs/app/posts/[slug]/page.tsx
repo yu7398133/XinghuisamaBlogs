@@ -170,7 +170,7 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
                   .prose h1 { font-size: 1.5rem !important; font-weight: 900 !important; margin-bottom: 0.8rem !important; margin-top: 2rem !important; line-height: 1.3 !important; color: inherit !important; }
                   .prose h2 { font-size: 1.3rem !important; font-weight: 800 !important; margin-bottom: 0.6rem !important; margin-top: 1.8rem !important; color: inherit !important; }
                   .prose h3 { font-size: 1.15rem !important; font-weight: 700 !important; margin-bottom: 0.5rem !important; margin-top: 1.5rem !important; color: inherit !important; }
-                  .prose p { font-size: 0.925rem !important; line-height: 1.75 !important; color: inherit !important; }
+                  .prose p { font-size: 0.925rem !important; line-height: 1.75 !important; color: inherit !important; margin-top: 0.3rem !important; margin-bottom: 0.5rem !important; }
                   
                   .prose a { color: #6366f1 !important; text-decoration: none !important; font-weight: 600 !important; border-bottom: 1px dashed #6366f1 !important; transition: all 0.3s ease !important; }
                   .prose a:hover { color: #4f46e5 !important; border-bottom-style: solid !important; background-color: rgba(99, 102, 241, 0.1) !important; padding: 0 0.2rem !important; border-radius: 0.2rem !important; }

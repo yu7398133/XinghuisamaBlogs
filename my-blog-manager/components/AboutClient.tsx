@@ -136,15 +136,26 @@ export default function AboutClient({
           <img src={siteConfig.avatarUrl} alt="avatar" className="w-full h-full object-cover" />
         </div>
 
-        <div className="mt-4 md:mt-6 mb-6 md:mb-8 relative flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-2 md:mb-3 transition-colors duration-700">关于我</h1>
+        {/* 🌟 核心修复区：手机端排版优雅适配 */}
+        <div className="mt-4 md:mt-6 mb-6 md:mb-8 relative flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-4">
+          <div className="text-center md:text-left">
+            <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-1 md:mb-3 transition-colors duration-700">关于我</h1>
             <p className="text-sm md:text-lg text-indigo-600 dark:text-indigo-400 font-bold tracking-widest uppercase transition-colors duration-700">Hello World, I'm {siteConfig.authorName}</p>
           </div>
 
-          <div className="flex items-center gap-1 bg-white/50 dark:bg-slate-900/50 p-1.5 rounded-2xl shadow-inner border border-white/40 dark:border-white/5">
-            <button onClick={() => handleTabChange('intro')} className={`px-6 py-2 rounded-xl text-sm font-black transition-all duration-300 ${activeTab === 'intro' ? 'bg-indigo-500 text-white shadow-md' : 'text-slate-500 hover:text-indigo-500'}`}>自我介绍</button>
-            <button onClick={() => handleTabChange('activity')} className={`px-6 py-2 rounded-xl text-sm font-black transition-all duration-300 ${activeTab === 'activity' ? 'bg-indigo-500 text-white shadow-md' : 'text-slate-500 hover:text-indigo-500'}`}>研究动态</button>
+          <div className="flex items-center w-full md:w-auto gap-1 bg-white/50 dark:bg-slate-900/50 p-1 md:p-1.5 rounded-xl md:rounded-2xl shadow-inner border border-white/40 dark:border-white/5">
+            <button
+              onClick={() => handleTabChange('intro')}
+              className={`flex-1 md:flex-none px-4 md:px-6 py-2 md:py-2 rounded-lg md:rounded-xl text-xs md:text-sm font-black transition-all duration-300 ${activeTab === 'intro' ? 'bg-indigo-500 text-white shadow-md' : 'text-slate-500 hover:text-indigo-500'}`}
+            >
+              自我介绍
+            </button>
+            <button
+              onClick={() => handleTabChange('activity')}
+              className={`flex-1 md:flex-none px-4 md:px-6 py-2 md:py-2 rounded-lg md:rounded-xl text-xs md:text-sm font-black transition-all duration-300 ${activeTab === 'activity' ? 'bg-indigo-500 text-white shadow-md' : 'text-slate-500 hover:text-indigo-500'}`}
+            >
+              研究动态
+            </button>
           </div>
         </div>
 
@@ -155,11 +166,11 @@ export default function AboutClient({
             <motion.div key="intro" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
               <div className="relative">
                 <style>{`
-                  .prose h1 { font-size: 1.8rem !important; font-weight: 900 !important; margin-bottom: 1.2rem !important; margin-top: 2rem !important; line-height: 1.3 !important; color: inherit !important; }
-                  .prose h2 { font-size: 1.5rem !important; font-weight: 800 !important; margin-bottom: 1rem !important; margin-top: 1.5rem !important; color: inherit !important; }
-                  .prose h3 { font-size: 1.2rem !important; font-weight: 700 !important; margin-bottom: 0.8rem !important; color: inherit !important; }
-                  .prose p { font-size: 0.95rem !important; line-height: 1.75 !important; color: inherit !important; }
-                  .prose ul, .prose ol { padding-left: 1.2rem !important; font-size: 0.95rem !important; }
+                  .prose h1 { font-size: 1.5rem !important; font-weight: 900 !important; margin-bottom: 0.8rem !important; margin-top: 2rem !important; line-height: 1.3 !important; color: inherit !important; }
+                  .prose h2 { font-size: 1.3rem !important; font-weight: 800 !important; margin-bottom: 0.6rem !important; margin-top: 1.8rem !important; color: inherit !important; }
+                  .prose h3 { font-size: 1.15rem !important; font-weight: 700 !important; margin-bottom: 0.5rem !important; margin-top: 1.5rem !important; color: inherit !important; }
+                  .prose p { font-size: 0.925rem !important; line-height: 1.75 !important; color: inherit !important; margin-top: 0.3rem !important; margin-bottom: 0.5rem !important; }
+                  .prose ul, .prose ol { padding-left: 1.2rem !important; font-size: 0.925rem !important; }
 
                   .prose pre {
                     background-color: #282c34 !important; color: #abb2bf !important;
@@ -194,14 +205,14 @@ export default function AboutClient({
                   .prose pre code .hljs-symbol, .prose pre code .hljs-bullet, .prose pre code .hljs-link, .prose pre code .hljs-meta, .prose pre code .hljs-selector-id, .prose pre code .hljs-title { color: #61aeee !important; }
 
                   @media (min-width: 768px) {
-                    .prose h1 { font-size: 3rem !important; font-weight: 950 !important; margin-bottom: 2rem !important; margin-top: 3rem !important; line-height: 1.1 !important; }
-                    .prose h2 { font-size: 2.2rem !important; margin-bottom: 1.5rem !important; margin-top: 2rem !important; }
-                    .prose p { font-size: 1.15rem !important; }
+                    .prose h1 { font-size: 1.5rem !important; font-weight: 900 !important; margin-bottom: 0.8rem !important; margin-top: 2rem !important; line-height: 1.3 !important; }
+                    .prose h2 { font-size: 1.3rem !important; font-weight: 800 !important; margin-bottom: 0.6rem !important; margin-top: 1.8rem !important; }
+                    .prose p { font-size: 0.925rem !important; margin-top: 0.3rem !important; margin-bottom: 0.5rem !important; }
                     .prose pre { padding: 1.25rem !important; margin-top: 1.5rem !important; margin-bottom: 1.5rem !important; }
                     .prose pre code { font-size: 0.9em !important; }
                   }
                 `}</style>
-                <div className="prose prose-slate dark:prose-invert prose-base md:prose-lg max-w-none text-slate-800 dark:text-slate-200 font-serif transition-colors duration-700 leading-relaxed scroll-smooth" dangerouslySetInnerHTML={{ __html: contentHtml }} />
+                <div className="prose prose-slate dark:prose-invert prose-base max-w-none text-slate-800 dark:text-slate-200 font-serif transition-colors duration-700 leading-relaxed scroll-smooth" dangerouslySetInnerHTML={{ __html: contentHtml }} />
               </div>
               <div className="mt-12 md:mt-16"><Comments /></div>
             </motion.div>
@@ -218,9 +229,8 @@ export default function AboutClient({
 
                 <div className="flex gap-2">
 
-                  {/* 🌟 核心修复区 1：左侧星期轴采用绝对矩阵对齐法 */}
                   <div className="flex flex-col shrink-0">
-                    <div className="h-4 mb-1"></div> {/* 给上面的月份让出空间 */}
+                    <div className="h-4 mb-1"></div>
                     <div className="flex flex-col gap-[4px] text-[10px] text-slate-400">
                       <div className="h-[11px] md:h-[13px]"></div>
                       <div className="h-[11px] md:h-[13px] leading-none flex items-center">Mon</div>
@@ -235,7 +245,6 @@ export default function AboutClient({
                   <div ref={heatmapScrollRef} className="flex-1 overflow-x-auto pb-4 custom-scrollbar scroll-smooth relative">
                     <div className="min-w-[700px]">
 
-                      {/* 🌟 核心修复区 2：顶部月份采用绝对宽度的 Flex 格子对齐法 */}
                       <div className="flex gap-[4px] text-[10px] text-slate-400 mb-1 h-4">
                         {weeks.map((week, idx) => {
                           const firstDay = week[0];
@@ -252,7 +261,6 @@ export default function AboutClient({
                         })}
                       </div>
 
-                      {/* 这是热力图本体（尺寸没有变，但上面的月份和左边的星期已经完全和它同宽同高了） */}
                       <div className="flex gap-[4px]">
                         {weeks.map((week, i) => (
                           <div key={i} className="flex flex-col gap-[4px]">
