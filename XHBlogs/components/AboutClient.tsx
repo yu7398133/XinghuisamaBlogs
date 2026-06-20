@@ -166,11 +166,11 @@ export default function AboutClient({
             <motion.div key="intro" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
               <div className="relative">
                 <style>{`
-                  .prose h1 { font-size: 1.4rem !important; font-weight: 900 !important; margin-bottom: 0.8rem !important; margin-top: 2rem !important; line-height: 1.3 !important; color: inherit !important; }
-                  .prose h2 { font-size: 1.25rem !important; font-weight: 800 !important; margin-bottom: 0.6rem !important; margin-top: 1.8rem !important; color: inherit !important; }
-                  .prose h3 { font-size: 1.1rem !important; font-weight: 700 !important; margin-bottom: 0.5rem !important; margin-top: 1.5rem !important; color: inherit !important; }
-                  .prose p { font-size: 0.9rem !important; line-height: 1.75 !important; color: inherit !important; }
-                  .prose ul, .prose ol { padding-left: 1.2rem !important; font-size: 0.9rem !important; }
+                  .prose h1 { font-size: 1.5rem !important; font-weight: 900 !important; margin-bottom: 0.8rem !important; margin-top: 2rem !important; line-height: 1.3 !important; color: inherit !important; }
+                  .prose h2 { font-size: 1.3rem !important; font-weight: 800 !important; margin-bottom: 0.6rem !important; margin-top: 1.8rem !important; color: inherit !important; }
+                  .prose h3 { font-size: 1.15rem !important; font-weight: 700 !important; margin-bottom: 0.5rem !important; margin-top: 1.5rem !important; color: inherit !important; }
+                  .prose p { font-size: 0.925rem !important; line-height: 1.75 !important; color: inherit !important; }
+                  .prose ul, .prose ol { padding-left: 1.2rem !important; font-size: 0.925rem !important; }
 
                   .prose pre {
                     background-color: #282c34 !important; color: #abb2bf !important;
@@ -205,9 +205,9 @@ export default function AboutClient({
                   .prose pre code .hljs-symbol, .prose pre code .hljs-bullet, .prose pre code .hljs-link, .prose pre code .hljs-meta, .prose pre code .hljs-selector-id, .prose pre code .hljs-title { color: #61aeee !important; }
 
                   @media (min-width: 768px) {
-                    .prose h1 { font-size: 3rem !important; font-weight: 950 !important; margin-bottom: 2rem !important; margin-top: 3rem !important; line-height: 1.1 !important; }
-                    .prose h2 { font-size: 2.2rem !important; margin-bottom: 1.5rem !important; margin-top: 2rem !important; }
-                    .prose p { font-size: 1.15rem !important; }
+                    .prose h1 { font-size: 1.5rem !important; font-weight: 900 !important; margin-bottom: 0.8rem !important; margin-top: 2rem !important; line-height: 1.3 !important; }
+                    .prose h2 { font-size: 1.3rem !important; font-weight: 800 !important; margin-bottom: 0.6rem !important; margin-top: 1.8rem !important; }
+                    .prose p { font-size: 0.925rem !important; }
                     .prose pre { padding: 1.25rem !important; margin-top: 1.5rem !important; margin-bottom: 1.5rem !important; }
                     .prose pre code { font-size: 0.9em !important; }
                   }
