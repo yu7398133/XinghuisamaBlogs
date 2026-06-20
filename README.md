@@ -92,7 +92,9 @@
 
 **Docker 部署（推荐）：**
 
-镜像已发布至 GitHub Container Registry，无需本地构建，一键拉取即可运行。
+镜像已发布至 GitHub Container Registry，提供两种 Compose 方式：
+
+**方式 A：直接拉取远程镜像（推荐，无需本地构建）**
 
 ```bash
 # 1. 克隆项目
@@ -101,6 +103,12 @@ cd XinghuisamaBlogs
 
 # 2. 一键启动（自动拉取远程镜像）
 docker compose up -d
+```
+
+**方式 B：本地构建镜像（适合自行修改代码后构建）**
+
+```bash
+docker compose -f docker-compose.build.yml up -d --build
 ```
 
 启动后在浏览器打开：`http://<你的设备IP>:13001`
@@ -114,8 +122,11 @@ docker compose logs -f
 # 停止
 docker compose down
 
-# 拉取最新镜像并重启
+# 拉取最新镜像并重启（方式 A）
 docker compose pull && docker compose up -d
+
+# 重新构建并重启（方式 B）
+docker compose -f docker-compose.build.yml up -d --build
 ```
 
 **Docker 镜像：** `ghcr.io/yu7398133/xhblogs-manager:latest`

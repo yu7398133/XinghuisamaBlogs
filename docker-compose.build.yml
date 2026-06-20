@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  xhblogs-manager:
+    build: .
+    container_name: xhblogs-manager
+    restart: unless-stopped
+    ports:
+      - "13001:3000"   # 前端管理界面（外部端口:内部端口）
+      - "8019:8019"    # 后端 API
+    volumes:
+      # 博客前端源码（XHBlogs 目录）
+      - ./XHBlogs:/data/blog
+      # 管理器数据（草稿等，持久化）
+      - manager_data:/data/manager_data
+    environment:
+      - BACKEND_HOST=0.0.0.0
+      - BACKEND_PORT=8019
+      - FRONTEND_HOST=0.0.0.0
+      - FRONTEND_PORT=3000
+      - BLOG_PATH=/data/blog
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8019/api/status')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  manager_data:
