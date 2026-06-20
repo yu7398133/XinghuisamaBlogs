@@ -30,7 +30,7 @@ frontend_process = None
 # 配置：可通过环境变量或 config 文件覆盖
 # ============================================================
 def get_config():
-    """读取 web_config.json，不存在则用默认值"""
+    """读取 web_config.json；不存在则自动生成默认配置，后续可手动修改或用环境变量覆盖"""
     config_file = os.path.join(EXE_DIR, 'web_config.json')
     defaults = {
         "backend_host": "0.0.0.0",
@@ -40,14 +40,22 @@ def get_config():
         "use_dev_mode": False,
         "blog_path": ""
     }
-    if os.path.exists(config_file):
+    # 首次运行：自动生成配置文件
+    if not os.path.exists(config_file):
+        try:
+            with open(config_file, 'w', encoding='utf-8') as f:
+                json.dump(defaults, f, ensure_ascii=False, indent=2)
+            print(f"  📝 首次运行，已自动生成配置文件: {config_file}")
+        except Exception:
+            pass
+    else:
         try:
             with open(config_file, 'r', encoding='utf-8') as f:
                 user_cfg = json.load(f)
                 defaults.update(user_cfg)
         except Exception:
             pass
-    # 环境变量优先
+    # 环境变量优先（适合 Docker 通过 -e 覆盖）
     defaults["backend_port"] = int(os.environ.get("BACKEND_PORT", defaults["backend_port"]))
     defaults["frontend_port"] = int(os.environ.get("FRONTEND_PORT", defaults["frontend_port"]))
     defaults["backend_host"] = os.environ.get("BACKEND_HOST", defaults["backend_host"])
