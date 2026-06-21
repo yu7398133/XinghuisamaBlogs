@@ -62,7 +62,8 @@ def trigger_rebuild(blog_path):
                     shutil.rmtree(standalone_public)
                 shutil.copytree(public_src, standalone_public)
 
-            print("[Rebuild] Done! Static files updated. Refresh browser to see changes.")
+            print("[Rebuild] Done! Killing node to trigger launcher auto-restart...")
+            os.system("kill $(pidof node) 2>/dev/null || true")
         except Exception as e:
             print(f"[Rebuild] Failed: {e}")
 
