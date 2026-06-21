@@ -63,6 +63,7 @@ def trigger_rebuild(blog_path):
                 shutil.copytree(public_src, standalone_public)
 
             print("[Rebuild] Done! Killing node to trigger launcher auto-restart...")
+            # 杀掉 node 进程，launcher 会自动重启它
             os.system("kill $(pidof node) 2>/dev/null || true")
         except Exception as e:
             print(f"[Rebuild] Failed: {e}")
