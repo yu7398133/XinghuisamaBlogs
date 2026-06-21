@@ -14,6 +14,7 @@ export default function RepoSection() {
   const [isDeploying, setIsDeploying] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
+  const [isRebuilding, setIsRebuilding] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
   const [mounted, setMounted] = useState(false);
@@ -167,6 +168,18 @@ export default function RepoSection() {
     setIsUploading(false);
   };
 
+  const executeRebuild = async () => {
+    setIsRebuilding(true);
+    showToast("\ud83d\udd04 \u524d\u7aef\u6b63\u5728\u91cd\u5efa\uff0c\u7ea6 1-3 \u5206\u949f\u540e\u5237\u65b0\u9875\u9762\u751f\u6548...", "info");
+    try {
+      const res = await fetch('/api/sync/rebuild', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) showToast(data.message, "success");
+      else showToast("\u274c \u91cd\u5efa\u5931\u8d25: " + data.message, "error");
+    } catch (error) { showToast("\u91cd\u5efa\u8bf7\u6c42\u5931\u8d25", "error"); }
+    setIsRebuilding(false);
+  };
+
   const handleSaveConfig = async () => {
     setIsSaving(true);
     try {
@@ -271,6 +284,10 @@ export default function RepoSection() {
                     <CloudUpload size={18} className={isUploading ? "animate-pulse" : ""} /> {isUploading ? "同步中..." : "☁️ 仅同步源码 (Vercel)"}
                  </button>
                </div>
+
+               <button onClick={executeRebuild} disabled={isRebuilding} className="w-full flex items-center justify-center gap-2 py-4 bg-amber-500 text-white rounded-2xl text-sm font-black shadow-lg shadow-amber-500/30 active:scale-95 transition-all hover:bg-amber-600">
+                    <Wand2 size={18} className={isRebuilding ? "animate-spin" : ""} /> {isRebuilding ? "重建中..." : "\ud83d\udd04 \u91cd\u542f\u524d\u7aef (\u672c\u5730\u9884\u89c8)"}
+               </button>
             </div>
           </div>
 
