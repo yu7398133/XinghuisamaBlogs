@@ -270,7 +270,31 @@ async def sync_local_operations(request: Request):
 
             results.append(f"✅ 已发布: {fm['title']}")
 
-    return {"success": True, "message": "\n".join(results)}
+    # 触发后台 rebuild
+    import subprocess, threading, shutil
+    def _rebuild():
+        try:
+            app_dir = "/app"
+            subprocess.run(["npm", "run", "build"], cwd=app_dir, timeout=300, capture_output=True)
+            static_src = os.path.join(app_dir, ".next", "static")
+            standalone_next = os.path.join(app_dir, ".next", "standalone", ".next")
+            if os.path.exists(static_src) and os.path.exists(standalone_next):
+                dst = os.path.join(standalone_next, "static")
+                if os.path.exists(dst):
+                    shutil.rmtree(dst)
+                shutil.copytree(static_src, dst)
+            public_src = os.path.join(app_dir, "public")
+            standalone_public = os.path.join(app_dir, ".next", "standalone", "public")
+            if os.path.exists(public_src):
+                if os.path.exists(standalone_public):
+                    shutil.rmtree(standalone_public)
+                shutil.copytree(public_src, standalone_public)
+            os.system("kill $(pidof node) 2>/dev/null || true")
+        except Exception as e:
+            print(f"[Rebuild] Failed: {e}")
+    threading.Thread(target=_rebuild, daemon=True).start()
+
+    return {"success": True, "message": "\n".join(results) + "\n🔄 前端正在后台重建，约 1-2 分钟后自动生效。"}
 
 
 @router.get("/all_tags")
