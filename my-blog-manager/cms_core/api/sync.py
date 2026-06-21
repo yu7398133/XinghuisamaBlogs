@@ -62,9 +62,9 @@ def trigger_rebuild(blog_path):
                     shutil.rmtree(standalone_public)
                 shutil.copytree(public_src, standalone_public)
 
-            print("[Rebuild] Done! Killing node to trigger launcher auto-restart...")
-            # 杀掉 node 进程，launcher 会自动重启它
-            os.system("kill $(pidof node) 2>/dev/null || true")
+            print("[Rebuild] Done! Restarting container...")
+            # 必须重启容器，kill node 后 launcher 的 node 不会加载新编译产物
+            os.system("docker restart xhblogs-manager &")
         except Exception as e:
             print(f"[Rebuild] Failed: {e}")
 
