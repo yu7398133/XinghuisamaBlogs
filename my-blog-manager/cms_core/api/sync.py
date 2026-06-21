@@ -62,9 +62,7 @@ def trigger_rebuild(blog_path):
                     shutil.rmtree(standalone_public)
                 shutil.copytree(public_src, standalone_public)
 
-            # 重启容器（比 kill node 更安全）
-            os.system("docker restart xhblogs-manager 2>/dev/null &")
-            print("[Rebuild] Done! Frontend restarted.")
+            print("[Rebuild] Done! Static files updated. Refresh browser to see changes.")
         except Exception as e:
             print(f"[Rebuild] Failed: {e}")
 
