@@ -59,8 +59,9 @@ def trigger_rebuild(blog_path):
                     shutil.rmtree(standalone_public)
                 shutil.copytree(public_src, standalone_public)
 
-            # 重启前端进程
-            os.system("pkill -f 'node server.js' || true")
+            # 重启前端进程 (容器内没有 pkill，用 kill + pidof 替代)
+            import signal
+            os.system("kill $(pidof 'node server.js') 2>/dev/null || true")
             print("[Rebuild] Done! Frontend restarted.")
         except Exception as e:
             print(f"[Rebuild] Failed: {e}")
