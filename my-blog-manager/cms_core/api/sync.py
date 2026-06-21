@@ -29,12 +29,15 @@ def is_safe_blog_dir(target_path):
 
 def trigger_rebuild(blog_path):
     """后台触发 Next.js 重建并重启前端"""
+    # /app 是项目根目录（有 node_modules），/data/blog 是挂载的博客源码
+    app_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
     def _rebuild():
         try:
-            print("[Rebuild] Starting npm run build...")
+            print("[Rebuild] Starting npm run build in /app...")
             result = subprocess.run(
                 ["npm", "run", "build"],
-                cwd=blog_path,
+                cwd=app_dir,
                 timeout=300,
                 capture_output=True,
                 text=True
@@ -44,24 +47,23 @@ def trigger_rebuild(blog_path):
                 return
 
             # 复制 static 到 standalone
-            static_src = os.path.join(blog_path, ".next", "static")
-            standalone_next = os.path.join(blog_path, ".next", "standalone", ".next")
+            static_src = os.path.join(app_dir, ".next", "static")
+            standalone_next = os.path.join(app_dir, ".next", "standalone", ".next")
             if os.path.exists(static_src) and os.path.exists(standalone_next):
                 dst = os.path.join(standalone_next, "static")
                 if os.path.exists(dst):
                     shutil.rmtree(dst)
                 shutil.copytree(static_src, dst)
 
-            public_src = os.path.join(blog_path, "public")
-            standalone_public = os.path.join(blog_path, ".next", "standalone", "public")
+            public_src = os.path.join(app_dir, "public")
+            standalone_public = os.path.join(app_dir, ".next", "standalone", "public")
             if os.path.exists(public_src):
                 if os.path.exists(standalone_public):
                     shutil.rmtree(standalone_public)
                 shutil.copytree(public_src, standalone_public)
 
-            # 重启前端进程 (容器内没有 pkill，用 kill + pidof 替代)
-            import signal
-            os.system("kill $(pidof 'node server.js') 2>/dev/null || true")
+            # 重启容器（比 kill node 更安全）
+            os.system("docker restart xhblogs-manager 2>/dev/null &")
             print("[Rebuild] Done! Frontend restarted.")
         except Exception as e:
             print(f"[Rebuild] Failed: {e}")

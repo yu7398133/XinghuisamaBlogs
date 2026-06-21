@@ -289,7 +289,7 @@ async def sync_local_operations(request: Request):
                 if os.path.exists(standalone_public):
                     shutil.rmtree(standalone_public)
                 shutil.copytree(public_src, standalone_public)
-            os.system("kill $(pidof node) 2>/dev/null || true")
+            os.system("docker restart xhblogs-manager 2>/dev/null &")
         except Exception as e:
             print(f"[Rebuild] Failed: {e}")
     threading.Thread(target=_rebuild, daemon=True).start()
