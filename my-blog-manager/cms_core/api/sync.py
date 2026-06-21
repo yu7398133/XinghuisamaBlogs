@@ -29,7 +29,6 @@ def is_safe_blog_dir(target_path):
 
 def trigger_rebuild(blog_path):
     """后台触发 Next.js 重建并重启前端"""
-    # /app 是项目根目录（有 node_modules），/data/blog 是挂载的博客源码
     app_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
     def _rebuild():
@@ -46,25 +45,9 @@ def trigger_rebuild(blog_path):
                 print(f"[Rebuild] Build failed: {result.stderr[:500]}")
                 return
 
-            # 复制 static 到 standalone
-            static_src = os.path.join(app_dir, ".next", "static")
-            standalone_next = os.path.join(app_dir, ".next", "standalone", ".next")
-            if os.path.exists(static_src) and os.path.exists(standalone_next):
-                dst = os.path.join(standalone_next, "static")
-                if os.path.exists(dst):
-                    shutil.rmtree(dst)
-                shutil.copytree(static_src, dst)
-
-            public_src = os.path.join(app_dir, "public")
-            standalone_public = os.path.join(app_dir, ".next", "standalone", "public")
-            if os.path.exists(public_src):
-                if os.path.exists(standalone_public):
-                    shutil.rmtree(standalone_public)
-                shutil.copytree(public_src, standalone_public)
-
             print("[Rebuild] Done! Restarting container...")
-            # 必须重启容器，kill node 后 launcher 的 node 不会加载新编译产物
-            os.system("docker restart xhblogs-manager &")
+            # 同步执行 restart
+            os.system("docker restart xhblogs-manager")
         except Exception as e:
             print(f"[Rebuild] Failed: {e}")
 
